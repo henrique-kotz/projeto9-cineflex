@@ -7,6 +7,17 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+main {
+    margin-top: 67px;
+}
+
+.loading {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 header {
     width: 100%;
     height: 67px;
@@ -22,4 +33,37 @@ header h1 {
     font-size: 34px;
     font-weight: 400;
     color: #e8833a;
+}
+
+h2 {
+    width: 100%;
+    height: 110px;
+    font-size: 24px;
+    font-weight: 400;
+    color: #293845;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.catalog ul {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.catalog li {
+    width: 145px;
+    height: 209px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 11px;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.1);
+}
+.catalog img {
+    width: 129px;
+    height: 193px;
 }
