@@ -1,7 +1,27 @@
+import styled from 'styled-components';
+
 export default function Header() {
     return (
-        <header>
+        <HeaderWrapper>
             <h1>CINEFLEX</h1>
-        </header>
+        </HeaderWrapper>
     )
 }
+
+const HeaderWrapper = styled.header`
+    width: 100%;
+    height: 67px;
+    background-color: #c3cfd9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    h1 {
+        font-size: 34px;
+        font-weight: 400;
+        color: #e8833a;
+    }
+`;
