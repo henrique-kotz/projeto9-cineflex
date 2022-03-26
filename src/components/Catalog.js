@@ -32,18 +32,4 @@ ul {
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
-li {
-    width: 145px;
-    height: 209px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 11px;
-    border-radius: 3px;
-    box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.1);
-}
-img {
-    width: 129px;
-    height: 193px;
-}
 `;
