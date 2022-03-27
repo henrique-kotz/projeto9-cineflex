@@ -1,18 +1,37 @@
 import styled from 'styled-components';
 
-export default function Footer({ movie }) {
-    const { title, posterURL } = movie
+export default function Footer({ data }) {
+    if (data.day) {
+        const { title, posterURL } = data.movie;
+        const { weekday, date } = data.day;
 
-    return (
-        <footer>
-            <Container>
-                <Poster>
-                    <img src={posterURL} alt={title} />
-                </Poster>
-                <p>{title}</p>
-            </Container>
-        </footer>
-    );
+        return (
+            <footer>
+                <Container>
+                    <Poster>
+                        <img src={posterURL} alt={title} />
+                    </Poster>
+                    <div>
+                        <p>{title}</p>
+                        <p>{weekday} - {date}</p>
+                    </div>
+                </Container>
+            </footer>
+        );
+    } else {
+        const { title, posterURL } = data;
+
+        return (
+            <footer>
+                <Container>
+                    <Poster>
+                        <img src={posterURL} alt={title} />
+                    </Poster>
+                    <p>{title}</p>
+                </Container>
+            </footer>
+        );
+    }
 }
 
 const Container = styled.div`
@@ -33,7 +52,6 @@ const Container = styled.div`
         font-weight: 400;
         line-height: 30px;
         color: #293845;
-        max-width: calc(100% - 78px);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

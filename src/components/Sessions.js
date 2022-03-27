@@ -29,7 +29,7 @@ export default function Sessions() {
                 {showtimes.map(s => <Showtime key={s.id} session={s} />)}
             </ul>
         </SessionsContainer>
-        <Footer movie={movieData} />
+        <Footer data={movieData} />
     </>
     ) : <Loading />;
 }

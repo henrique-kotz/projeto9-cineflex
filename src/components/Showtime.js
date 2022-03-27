@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export default function Showtime(props) {
@@ -7,7 +8,10 @@ export default function Showtime(props) {
         <Day>
             <p>{weekday} - {date}</p>
             <div>
-                {showtimes.map(time => <button key={time.id}>{time.name}</button>)}
+                {showtimes.map(time => 
+                    <Link to={'/assentos/' + time.id} key={time.id}>
+                        <button>{time.name}</button>
+                    </Link>)}
             </div>
         </Day>
     );

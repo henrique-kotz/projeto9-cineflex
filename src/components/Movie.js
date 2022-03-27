@@ -6,7 +6,7 @@ export default function Movie(props) {
 
     return (
         <MoviePoster>
-            <Link to={'sessoes/' + id}>
+            <Link to={'/sessoes/' + id}>
                 <img src={posterURL} alt={title} />
             </Link>
         </MoviePoster>
