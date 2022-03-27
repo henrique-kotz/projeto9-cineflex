@@ -25,7 +25,14 @@ export default function Seats() {
 
     const [sessionData, setSessionData] = useState(null);
     const [seats, setSeats] = useState(null);
+    const [reservation, setReservation] = useState({
+        ids: [],
+        name: '',
+        cpf: ''
+    });
     const { idSessao } = useParams();
+
+    const [selectedSeats, setSelectedSeats] = useState([]);
 
     useEffect(() => {
         axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
@@ -36,19 +43,37 @@ export default function Seats() {
             .catch(err => console.log(err.response))
     }, []);
 
+    function selectSeat(seat) {
+        if (seat.isAvailable) {
+            if (seat.isSelected) {
+                seat.isSelected = false;
+                setSelectedSeats([...selectedSeats].filter(elem => elem !== seat.id));
+            } else {
+                seat.isSelected = true;
+                setSelectedSeats([...selectedSeats, seat.id]);
+            }
+        } else {
+            alert('Esse assento não está disponível');
+        }
+    }
+
     return seats ? (
     <>
         <Container>
             <h2>Selecione o(s) assento(s)</h2>
+
             <SeatsDiagram>
                 <ul>
-                    {seats.map(({ id, name, isAvailable }) => 
-                        <SeatIcon key={id} isAvailable={isAvailable}>
-                            {name}
+                    {seats.map(seat => 
+                        <SeatIcon key={seat.id} 
+                         isAvailable={seat.isAvailable}
+                         isSelected={seat.isSelected}
+                         onClick={() => selectSeat(seat)}>
+                            {seat.name}
                         </SeatIcon>)}
                 </ul>
-
             </SeatsDiagram>
+
             <DescriptionWrapper>
                 {seatsInfo.map((info, index) => 
                     <SeatDescription key={index} color={info.color} border={info.border}>
@@ -97,8 +122,10 @@ const SeatIcon = styled.li`
     width: 24px;
     height: 24px;
     margin: 0 4px 18px;
-    background-color: ${props => props.isAvailable ? '#C3CFD9' : '#FBE192'};
-    border: 1px solid ${props => props.isAvailable ? '#7B8B99' : '#F7C52B'};
+    background-color: ${props => props.isAvailable ? 
+                            (props.isSelected ? '#8DD7CF' : '#C3CFD9') : '#FBE192'};
+    border: 1px solid ${props => props.isAvailable ? 
+                            (props.isSelected ? '#1AAE9E' : '#7B8B99') : '#F7C52B'};
     border-radius: 17px;
 
     font-size: 11px;
@@ -106,7 +133,11 @@ const SeatIcon = styled.li`
     
     display:flex;
     justify-content: center;
-    align-items: center
+    align-items: center;
+
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 const DescriptionWrapper = styled.div`
