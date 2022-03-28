@@ -25,14 +25,17 @@ export default function Seats() {
 
     const [sessionData, setSessionData] = useState(null);
     const [seats, setSeats] = useState(null);
-    const [reservation, setReservation] = useState({
-        ids: [],
-        name: '',
-        cpf: ''
-    });
     const { idSessao } = useParams();
+    
+    // const [reservation, setReservation] = useState({
+    //     ids: [],
+    //     name: '',
+    //     cpf: ''
+    // });
 
     const [selectedSeats, setSelectedSeats] = useState([]);
+    const [userName, setUserName] = useState('');
+    const [userCPF, setUserCPF] = useState('');
 
     useEffect(() => {
         axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
@@ -55,6 +58,19 @@ export default function Seats() {
         } else {
             alert('Esse assento não está disponível');
         }
+    }
+
+    function submitRequest(e) {
+        e.preventDefault();
+        if (selectedSeats.length === 0) return alert('Selecione pelo menos um assento!');
+
+        axios.post('https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many', {
+            ids: selectedSeats,
+            name: userName.trim(),
+            cpf: userCPF
+        })
+            .then(res => console.log(res))
+            .catch(err => console.log(err.response))
     }
 
     return seats ? (
@@ -83,12 +99,15 @@ export default function Seats() {
             </DescriptionWrapper>
             
             <FormWrapper>
-                <form onSubmit={() => console.log('opa')}>
+                <form onSubmit={submitRequest}>
                     <label htmlFor='name'>Nome do comprador:</label>
-                    <input type='text' id='name' placeholder='Digite seu nome...'></input>
+                    <input type='text' id='name' placeholder='Digite seu nome...' value={userName} required
+                        onChange={e => setUserName(e.target.value)}></input>
 
                     <label htmlFor='cpf'>Digite seu CPF...</label>
-                    <input type='text' id='cpf' placeholder='Digite seu CPF...'></input>
+                    <input type='text' id='cpf' placeholder='Digite seu CPF...' value={userCPF}
+                        pattern='[0-9]{11}' required
+                        onChange={e => setUserCPF(e.target.value)}></input>
 
                     <button type='submit'>Reservar assento(s)</button>
                 </form>
