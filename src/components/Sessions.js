@@ -7,7 +7,7 @@ import Showtime from './Showtime';
 import Footer from './Footer';
 import Loading from './Loading';
 
-export default function Sessions() {
+export default function Sessions({ info, setInfo }) {
     const [movieData, setMovieData] = useState(null);
     const [showtimes, setShowtimes] = useState(null);
     const { idFilme } = useParams();
@@ -17,6 +17,7 @@ export default function Sessions() {
         .then(res => {
             setMovieData(res.data);
             setShowtimes(res.data.days);
+            setInfo({...info, title: res.data.title});
         })
         .catch(err => console.log(err.response))
     } ,[]);
@@ -26,7 +27,7 @@ export default function Sessions() {
         <SessionsContainer>
             <h2>Selecione o horário</h2>
             <ul>
-                {showtimes.map(s => <Showtime key={s.id} session={s} />)}
+                {showtimes.map(s => <Showtime key={s.id} session={s} info={info} setInfo={setInfo} />)}
             </ul>
         </SessionsContainer>
         <Footer data={movieData} />

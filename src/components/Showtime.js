@@ -3,13 +3,15 @@ import styled from 'styled-components';
 
 export default function Showtime(props) {
     const { date, weekday, showtimes } = props.session;
+    const { info, setInfo } = props;
 
     return (
         <Day>
             <p>{weekday} - {date}</p>
             <div>
                 {showtimes.map(time => 
-                    <Link to={'/assentos/' + time.id} key={time.id}>
+                    <Link to={'/assentos/' + time.id} key={time.id} 
+                    onClick={() => setInfo({...info, showtime: time.name})}>
                         <button>{time.name}</button>
                     </Link>)}
             </div>

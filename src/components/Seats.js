@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
 import Footer from './Footer';
 import Loading from './Loading';
 
-export default function Seats() {
+export default function Seats({ info, setInfo }) {
     const seatsInfo = [{
         description: 'Selecionado',
         color: '#8DD7CF',
@@ -37,11 +37,15 @@ export default function Seats() {
     const [userName, setUserName] = useState('');
     const [userCPF, setUserCPF] = useState('');
 
+    const [seatNames, setSeatNames] = useState([]);
+    const navigate = useNavigate();
+
     useEffect(() => {
         axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
             .then(res => {
                 setSessionData(res.data);
                 setSeats(res.data.seats);
+                setInfo({...info, date: res.data.day.date, weekday: res.data.day.weekday});
             })
             .catch(err => console.log(err.response))
     }, []);
@@ -51,9 +55,11 @@ export default function Seats() {
             if (seat.isSelected) {
                 seat.isSelected = false;
                 setSelectedSeats([...selectedSeats].filter(elem => elem !== seat.id));
+                setSeatNames([...seatNames].filter(elem => elem !== seat.name));
             } else {
                 seat.isSelected = true;
                 setSelectedSeats([...selectedSeats, seat.id]);
+                setSeatNames([...seatNames, seat.name]);
             }
         } else {
             alert('Esse assento não está disponível');
@@ -69,7 +75,11 @@ export default function Seats() {
             name: userName.trim(),
             cpf: userCPF
         })
-            .then(res => console.log(res))
+            .then(res => {
+                console.log(res.data);
+                setInfo({...info, seats: seatNames, name: userName.trim(), cpf: userCPF});
+                navigate('/sucesso');
+            })
             .catch(err => console.log(err.response))
     }
 
